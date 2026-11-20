@@ -61,6 +61,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);bo
 #plan .rm text{font-family:'Cormorant Garamond',serif;fill:var(--blue);pointer-events:none;text-anchor:middle}
 #plan .rm .n{font-family:Lora,serif;font-size:26px;font-weight:600}#plan .rm .m{font-size:13px;font-family:Lora,serif}
 #plan .rm.sel text{fill:#fff}
+#plan .rm .t{font-family:Lora,serif;font-size:13px;font-style:italic;fill:#5d6482}#plan .rm .t.free{fill:#2e7d4f;font-weight:600}#plan .rm.sel .t{fill:#fff}
+.contract{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:var(--blue-l);border-left:4px solid var(--blue);padding:12px 14px;border-radius:0 4px 4px 0;margin:4px 0 16px}
+.contract p{margin:0;flex:1 1 260px;font-size:.92rem}
+.contract a.dl{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;padding:9px 16px;border-radius:4px;font-weight:600;font-size:.9rem;white-space:nowrap}
+.contract a.dl:hover,.contract a.dl:focus-visible{filter:brightness(1.15)}
 #plan .rm:focus-visible polygon{stroke-width:4}
 #plan.pulse .rm polygon{animation:pl 1.6s ease-in-out infinite}
 @keyframes pl{50%{fill:#b9c9f1}}
@@ -209,6 +214,7 @@ footer .tiles{margin-top:24px}
 <fieldset>
 <legend><span class="no">5</span>Confirmation</legend>
 <p class="intro">Almost done! Two quick things to confirm.</p>
+<div class="contract"><p><strong>Curious what you’ll be signing?</strong> Have a relaxed look at a blank draft of the tenancy agreement first. Your own agreement, with your details, room and rent filled in, follows by e‑mail after you register.</p><a class="dl" href="https://oudedelft107.pages.dev/tenancy-agreement-draft.pdf" target="_blank" rel="noopener">📄 Read the draft tenancy agreement (PDF)</a></div>
 <div class="chk fld"><input type="checkbox" id="c1" name="agreeTerms" required><label for="c1">I understand the tenancy is for a maximum of 24 months, a minimum of 12 months, and early termination costs a €250 administration fee. <span class="req">*</span></label><div class="err" style="width:100%">Please tick this box to continue.</div></div>
 <div class="chk fld"><input type="checkbox" id="c2" name="agreeData" required><label for="c2">My data is correct and I agree to its processing for the tenancy agreement. <span class="req">*</span></label><div class="err" style="width:100%">Please tick this box to continue.</div></div>
 <button class="submit" type="submit" id="btn">Send my registration</button>
@@ -346,6 +352,8 @@ const APTS={
   rooms:[[10,13,'40,515 230,515 230,625 40,625',135,578],[11,9,'40,630 228,630 228,750 40,750',135,690],[12,8,'40,760 228,760 228,880 40,880',135,820],[13,10,'282,620 372,620 372,885 228,885 228,800 282,800',320,750]],
   room1:10}
 };
+// current tenants (first names only), shown on the floor plan; update when a room changes hands
+const TENANTS={1:'Simão',2:'Matilda',3:'Radu-Gabriel',4:'Sofia',5:'Anastasija',6:'Davide',7:'Marco',8:'Riccardo',9:'Maxime',10:'Loukianos',11:'Edoardo',12:'Yana',13:'Victor'};
 const apt=$('#apartment'), plan=$('#plan'), NS='http://www.w3.org/2000/svg';
 function el(n,a,t){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!==undefined)e.textContent=t;return e;}
 function fillRooms(){
@@ -381,10 +389,11 @@ function drawPlan(){
     plan.appendChild(g);
   });
   A.rooms.forEach(([n,m,pts,x,y])=>{
-    const g=el('g',{class:'rm','data-room':n,role:'button',tabindex:0,'aria-label':'Room '+n+', '+m+' square metres'});
+    const g=el('g',{class:'rm','data-room':n,role:'button',tabindex:0,'aria-label':'Room '+n+', '+m+' square metres'+(TENANTS[n]?', current tenant '+TENANTS[n]:', available')});
     g.appendChild(el('polygon',{points:pts}));
     g.appendChild(el('text',{class:'n',x,y:y-2},n));
     g.appendChild(el('text',{class:'m',x,y:y+16},m+' m²'));
+    const tn=TENANTS[n];g.appendChild(el('text',{class:tn?'t':'t free',x,y:y+33},tn||'available'));
     const pick=()=>{room.value=String(n);room.dispatchEvent(new Event('change',{bubbles:true}));};
     g.addEventListener('click',pick);
     g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();}});
