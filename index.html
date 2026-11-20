@@ -177,7 +177,8 @@ footer .tiles{margin-top:24px}
 <div class="grid">
 <div class="fld"><label class="l" for="university">University <span class="req">*</span></label><input type="text" id="university" name="university" placeholder="e.g. TU Delft" required><div class="err">Please enter your university.</div></div>
 <div class="fld"><label class="l" for="programme">Study programme <span class="req">*</span></label><input type="text" id="programme" name="programme" required><div class="err">Please enter your study programme.</div></div>
-<div class="full fld"><label class="l" for="studentNo">Student number</label><input type="text" id="studentNo" name="studentNo"><div class="hint">If you don’t have one yet, just leave it empty.</div></div>
+<div class="fld"><label class="l" for="studyYear">Year of study <span class="req">*</span></label><select id="studyYear" name="studyYear" required><option value="">Choose your year…</option><option>Bachelor, year 1</option><option>Bachelor, year 2</option><option>Bachelor, year 3</option><option>Bachelor, year 4 or later</option><option>Master, year 1</option><option>Master, year 2</option><option>PhD</option><option>Exchange student</option><option>Other</option></select><div class="err">Please choose your year of study.</div></div>
+<div class="fld"><label class="l" for="studentNo">Student number</label><input type="text" id="studentNo" name="studentNo"><div class="hint">If you don’t have one yet, just leave it empty.</div></div>
 <div class="full fld"><label class="l" for="proofFile">Proof of student registration (PDF or JPG) <span class="req">*</span></label><div class="file"><input type="file" id="proofFile" name="proofFile" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" required></div><div class="hint">For example an enrolment confirmation or letter of admission. Maximum 5 MB.</div><div class="err">Please upload your proof of registration (PDF or JPG, max 5 MB).</div></div>
 <div class="fld"><label class="l" for="proofDate">Date of that proof <span class="req">*</span></label><input type="date" id="proofDate" name="proofDate" required><div class="err">Please enter the date of the document.</div></div>
 </div>
@@ -301,6 +302,7 @@ form.addEventListener('submit', async e=>{
       const fileKeys=['passportFile','proofFile'];
       const obj={type:'application'};
       new FormData(form).forEach((v,k)=>{ if(!fileKeys.includes(k) && k!=='website') obj[k]=v; });
+      if(obj.studyYear){ obj.programme=(obj.programme||'')+' ('+obj.studyYear+')'; }
       for(const k of fileKeys){
         const file=form[k].files[0];
         obj[k+'_name']=file.name; obj[k+'_type']=file.type||'application/octet-stream';
