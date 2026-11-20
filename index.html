@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome to Oude Delft 107 — Tenant registration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=IM+Fell+English:ital@0;1&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1f3a93;--blue-d:#14286b;--blue-l:#dfe6f6;--cream:#f7f0df;--paper:#fcf8ec;--ink:#22263a;--muted:#5d6482;--red:#a3342a;--line:#c9d1ea}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Lora',Georgia,serif;color:var(--ink);line-height:1.6;font-size:16px;
+background-color:var(--cream);
+background-image:radial-gradient(ellipse at top,#fffaf0 0,transparent 60%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.tiles{height:34px;background-color:var(--blue);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Crect width='34' height='34' fill='%23fcf8ec'/%3E%3Cg fill='none' stroke='%231f3a93' stroke-width='1.4'%3E%3Ccircle cx='17' cy='17' r='6'/%3E%3Cpath d='M17 5v6M17 23v6M5 17h6M23 17h6'/%3E%3C/g%3E%3Cg fill='%231f3a93'%3E%3Ccircle cx='17' cy='17' r='2'/%3E%3Cpath d='M0 0l4 0-4 4zM34 0v4l-4-4zM0 34v-4l4 4zM34 34h-4l4-4z'/%3E%3C/g%3E%3C/svg%3E");border-bottom:3px double var(--blue)}
+header{text-align:center;padding:0 16px;background:linear-gradient(#e9eefb,#f7f0df 95%)}
+.skyline{display:block;width:100%;max-width:760px;margin:0 auto;height:auto}
+.canal{height:10px;max-width:760px;margin:0 auto;background:repeating-linear-gradient(90deg,var(--blue) 0 14px,transparent 14px 20px);opacity:.25;border-radius:6px}
+.eyebrow{font-family:'IM Fell English',serif;font-style:italic;color:var(--muted);letter-spacing:.04em;margin:18px 0 0}
+h1{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--blue);font-size:clamp(2.2rem,7vw,3.6rem);line-height:1.05;margin:.15em 0 .1em}
+.addr{font-family:'IM Fell English',serif;color:var(--blue-d);font-size:1.1rem;margin:0 0 8px}
+.orn{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--blue);margin:10px auto 0;max-width:340px}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:var(--blue);opacity:.5}
+main{max-width:780px;margin:0 auto;padding:10px 16px 60px}
+.welcome{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:26px 28px;margin:22px 0;box-shadow:0 2px 0 var(--line),0 12px 30px -18px rgba(31,58,147,.45);position:relative}
+.welcome:before{content:"";position:absolute;inset:6px;border:1px solid var(--blue-l);border-radius:3px;pointer-events:none}
+.welcome p{margin:.6em 0}
+.sign{font-family:'IM Fell English',serif;font-style:italic;font-size:1.25rem;color:var(--blue);margin-top:14px!important}
+.welcome h2{font-family:'Cormorant Garamond',serif;color:var(--blue);font-size:2rem;margin:0 0 4px}
+.progress{position:sticky;top:0;z-index:5;background:rgba(247,240,223,.94);backdrop-filter:blur(4px);padding:8px 0;margin:0 -4px}
+.bar{height:6px;border-radius:4px;background:var(--blue-l);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--blue);transition:width .3s}
+.ptxt{font-size:.8rem;color:var(--muted);text-align:right;margin-top:3px}
+fieldset{border:1px solid var(--line);background:var(--paper);border-radius:6px;margin:22px 0;padding:8px 26px 24px;box-shadow:0 12px 30px -22px rgba(31,58,147,.5);border-top:4px solid var(--blue)}
+legend{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.7rem;color:var(--blue);padding:0 12px;display:flex;align-items:center;gap:10px}
+legend .no{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:1.1rem}
+.intro{color:var(--muted);font-style:italic;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+.full{grid-column:1/-1}
+label.l{display:block;font-weight:600;font-size:.92rem;color:var(--blue-d);margin-bottom:4px}
+.req{color:var(--red)}
+.hint{font-size:.8rem;color:var(--muted);margin-top:4px}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=datetime-local],select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid #aab5da;border-radius:4px;background:#fff;color:var(--ink);transition:border .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(31,58,147,.18)}
+.file{border:1.5px dashed var(--blue);border-radius:6px;background:#f3f6fd;padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.file input{font:inherit;font-size:.9rem;max-width:100%}
+.plan{background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px;border-top:3px double var(--blue)}
+.tabs{display:flex;gap:6px;justify-content:center;margin-bottom:10px}
+.tabs button{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.2rem;padding:6px 20px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);border-radius:4px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--blue);color:#fff}
+.tap{text-align:center;font-family:'IM Fell English',serif;font-style:italic;font-size:1.15rem;color:var(--blue);margin-bottom:6px}
+.tap .arrow{display:inline-block;animation:nudge 1s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(5px)}}
+#plan{display:block;width:100%;max-width:400px;margin:0 auto;height:auto;touch-action:manipulation}
+#plan .rm{cursor:pointer;outline:none}
+#plan .rm polygon{fill:#e8eefb;stroke:var(--blue);stroke-width:2;transition:fill .15s}
+#plan .rm:hover polygon{fill:#c3d0f2}
+#plan .rm.sel polygon{fill:var(--blue)}
+#plan .rm text{font-family:'Cormorant Garamond',serif;fill:var(--blue);pointer-events:none;text-anchor:middle}
+#plan .rm .n{font-family:Lora,serif;font-size:26px;font-weight:600}#plan .rm .m{font-size:13px;font-family:Lora,serif}
+#plan .rm.sel text{fill:#fff}
+#plan .rm:focus-visible polygon{stroke-width:4}
+#plan.pulse .rm polygon{animation:pl 1.6s ease-in-out infinite}
+@keyframes pl{50%{fill:#b9c9f1}}
+#plan .sh polygon{fill:#f3ecd7;stroke:#9aa5cf;stroke-width:1.5;stroke-dasharray:5 3}
+#plan .sh text{font-family:Lora,serif;font-size:11px;fill:var(--muted);text-anchor:middle;font-style:italic}
+.err{display:none;color:var(--red);font-size:.82rem;margin-top:4px}
+.invalid .err{display:block}
+.invalid input,.invalid select,.invalid .file{border-color:var(--red)}
+.radio{display:flex;gap:22px;padding-top:4px}
+.radio label,.chk label{cursor:pointer}
+.note{background:var(--blue-l);border-left:4px solid var(--blue);padding:10px 14px;font-size:.88rem;border-radius:0 4px 4px 0;margin-top:10px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);background:#fff;border-radius:4px;margin-bottom:12px}
+.chk input{margin-top:5px;width:18px;height:18px;accent-color:var(--blue);flex:none}
+.chk.invalid{border-color:var(--red)}
+.chk .err{margin-top:2px}
+button.submit{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.4rem;letter-spacing:.03em;color:#fff;background:var(--blue);border:0;border-radius:4px;padding:14px 40px;cursor:pointer;box-shadow:0 4px 0 var(--blue-d);transition:transform .1s,box-shadow .1s;width:100%}
+button.submit:hover{background:#2747ad}
+button.submit:active{transform:translateY(3px);box-shadow:0 1px 0 var(--blue-d)}
+button.submit[disabled]{opacity:.6;cursor:wait}
+.thanks{display:none;text-align:center}
+.thanks h2{font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--blue);margin:.2em 0}
+.thanks ol{text-align:left;max-width:520px;margin:16px auto;padding-left:22px}
+.thanks li{margin:.5em 0}
+.seal{width:84px;height:84px;margin:0 auto}
+.demo{font-size:.78rem;color:var(--muted);margin-top:14px}
+footer{text-align:center;font-family:'IM Fell English',serif;color:var(--muted);padding:0 16px 24px;font-size:.95rem}
+footer .tiles{margin-top:24px}
+.hp{position:absolute;left:-9999px}
+@media(max-width:620px){.grid{grid-template-columns:1fr}fieldset{padding:6px 16px 20px}.welcome{padding:22px 18px}legend{font-size:1.45rem}}
+.history h2{margin-bottom:2px}
+.history .lead{font-style:italic;color:var(--muted);margin:.2em 0 14px}
+.history ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.history li{display:flex;gap:14px;align-items:flex-start;margin:0}
+.history .tile{flex:none;width:44px;height:44px;border:2px solid var(--blue);border-radius:3px;background:var(--paper);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.05rem;color:var(--blue);box-shadow:inset 0 0 0 3px var(--blue-l);line-height:1}
+.history li p{margin:0}
+.history li b{font-family:'Cormorant Garamond',serif;color:var(--blue);font-size:1.15rem}
+</style>
+</head>
+<body>
+<div class="tiles" aria-hidden="true"></div>
+<header>
+<svg class="skyline" viewBox="0 0 760 210" role="img" aria-label="Silhouette of historic canal houses with stepped gables along the Oude Delft canal">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9eefb"/><stop offset="1" stop-color="#f7f0df"/></linearGradient></defs>
+<g fill="#1f3a93">
+<!-- Oude Kerk-ish tower -->
+<path d="M40 175V80l8-6V52l8-18 8 18v22l8 6v95z" opacity=".55"/>
+<!-- house 1: stepped gable -->
+<path d="M110 175V95h10v-12h12V71h12V59h14v12h12v12h12v12h10v80z"/>
+<!-- house 2: tall stepped -->
+<path d="M262 175V80h12V66h12V52h12V38h18v14h12v14h12v14h12v95z"/>
+<!-- house 3: bell gable -->
+<path d="M410 175V92c0-12 10-14 14-24 4-9 6-18 18-18s14 9 18 18c4 10 14 12 14 24v83z"/>
+<!-- house 4 -->
+<path d="M510 175V90h10V78h12V66h12V54h14v12h12v12h12v12h10v83z"/>
+<!-- house 5 low -->
+<path d="M642 175v-70h14V93h14V81h14v12h14v12h14v70z" opacity=".8"/>
+</g>
+<g fill="#f7f0df">
+<g id="w"><rect x="0" y="0" width="12" height="20" rx="6"/></g>
+<use href="#w" x="134" y="108"/><use href="#w" x="170" y="108"/><use href="#w" x="134" y="140"/><use href="#w" x="170" y="140"/>
+<use href="#w" x="286" y="92"/><use href="#w" x="322" y="92"/><use href="#w" x="354" y="92"/><use href="#w" x="286" y="128"/><use href="#w" x="322" y="128"/><use href="#w" x="354" y="128"/>
+<use href="#w" x="428" y="106"/><use href="#w" x="454" y="106"/><use href="#w" x="428" y="140"/><use href="#w" x="454" y="140"/>
+<use href="#w" x="534" y="104"/><use href="#w" x="570" y="104"/><use href="#w" x="534" y="138"/><use href="#w" x="570" y="138"/>
+<use href="#w" x="668" y="118"/><use href="#w" x="700" y="118"/><use href="#w" x="668" y="146"/><use href="#w" x="700" y="146"/>
+<rect x="332" y="44" width="10" height="14" rx="5"/><rect x="38" y="95" width="10" height="16" rx="5" opacity=".7"/>
+</g>
+<!-- canal -->
+<rect x="0" y="175" width="760" height="35" fill="#1f3a93" opacity=".12"/>
+<g stroke="#1f3a93" stroke-width="1.5" fill="none" opacity=".45" stroke-linecap="round">
+<path d="M20 188q10-5 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0"/>
+<path d="M0 200q10-5 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0"/>
+</g>
+</svg>
+<p class="eyebrow">Tenant registration · Student rooms</p>
+<h1>Oude Delft 107</h1>
+<p class="addr">107A · 107B · 107C — 2611 BE Delft</p>
+<div class="orn" aria-hidden="true">❖</div>
+</header>
+
+<main>
+<section class="welcome">
+<h2>Welcome to Oude Delft 107!</h2>
+<p>We are so happy that you are coming to live with us. Our three apartments stand on the Oude Delft, the oldest canal of Delft, where you will wake up to centuries‑old gables, the sound of church bells and bicycles on the cobbles.</p>
+<p>You will be right in the historic heart of the city: a few minutes from the market square and the cafés, and an easy bike ride from TU Delft. We hope you will feel at home from the very first day.</p>
+<p>This form takes only a few minutes. Once you have sent it, I will prepare your tenancy agreement and we will find a good moment to meet for the check‑in.</p>
+<p class="sign">Warm regards, Peter van Schie<br><small style="font-size:.85rem;font-family:Lora,serif;font-style:normal;color:var(--muted)">Your landlord</small></p>
+</section>
+
+<form id="f" novalidate>
+<div class="progress"><div class="bar"><i id="pb"></i></div><div class="ptxt" id="pt">0% completed</div></div>
+<input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+<fieldset>
+<legend><span class="no">1</span>Personal details</legend>
+<p class="intro">Let’s start with a little about you. I need these details for your tenancy agreement.</p>
+<div class="grid">
+<div class="full fld"><label class="l" for="fullName">Full name (as in passport) <span class="req">*</span></label><input type="text" id="fullName" name="fullName" autocomplete="name" required><div class="err">Please enter your full name as it appears in your passport.</div></div>
+<div class="fld"><label class="l" for="dob">Date of birth <span class="req">*</span></label><input type="date" id="dob" name="dob" required><div class="err">Please enter your date of birth.</div></div>
+<div class="fld"><label class="l" for="pob">Place of birth <span class="req">*</span></label><input type="text" id="pob" name="pob" required><div class="err">Please enter your place of birth (city, country).</div></div>
+<div class="fld"><label class="l" for="nationality">Nationality</label><input type="text" id="nationality" name="nationality"></div>
+<div class="fld"><label class="l" for="passportNo">Passport / ID number <span class="req">*</span></label><input type="text" id="passportNo" name="passportNo" required><div class="err">Please enter your passport or ID number.</div></div>
+<div class="full fld"><label class="l" for="passportFile">Passport copy (PDF or JPG) <span class="req">*</span></label><div class="file"><input type="file" id="passportFile" name="passportFile" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" required></div><div class="hint">A clear scan or photo of the page with your photo. Maximum 5 MB.</div><div class="err">Please upload a copy of your passport (PDF or JPG, max 5 MB).</div></div>
+<div class="fld"><label class="l" for="phone">Telephone, with country code <span class="req">*</span></label><input type="tel" id="phone" name="phone" placeholder="+31 6 12345678" autocomplete="tel" required><div class="err">Please include the country code, e.g. +31 6 12345678.</div></div>
+<div class="fld"><label class="l" for="email">E‑mail <span class="req">*</span></label><input type="email" id="email" name="email" autocomplete="email" required><div class="err">Please enter a valid e‑mail address.</div></div>
+<div class="full fld"><label class="l" for="homeAddress">Permanent home address</label><input type="text" id="homeAddress" name="homeAddress" autocomplete="street-address" placeholder="Street, postcode, city, country"><div class="hint">The address of your family home or home country.</div></div>
+<div class="fld"><label class="l" for="emName">Emergency contact — name</label><input type="text" id="emName" name="emName"></div>
+<div class="fld"><label class="l" for="emPhone">Emergency contact — phone</label><input type="tel" id="emPhone" name="emPhone" placeholder="+.."><div class="hint">Someone we can call if something happens.</div></div>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">2</span>Studies</legend>
+<p class="intro">Tell me where you will be studying. Student housing is for students, so I need a proof of registration.</p>
+<div class="grid">
+<div class="fld"><label class="l" for="university">University <span class="req">*</span></label><input type="text" id="university" name="university" placeholder="e.g. TU Delft" required><div class="err">Please enter your university.</div></div>
+<div class="fld"><label class="l" for="programme">Study programme <span class="req">*</span></label><input type="text" id="programme" name="programme" required><div class="err">Please enter your study programme.</div></div>
+<div class="full fld"><label class="l" for="studentNo">Student number</label><input type="text" id="studentNo" name="studentNo"><div class="hint">If you don’t have one yet, just leave it empty.</div></div>
+<div class="full fld"><label class="l" for="proofFile">Proof of student registration (PDF or JPG) <span class="req">*</span></label><div class="file"><input type="file" id="proofFile" name="proofFile" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" required></div><div class="hint">For example an enrolment confirmation or letter of admission. Maximum 5 MB.</div><div class="err">Please upload your proof of registration (PDF or JPG, max 5 MB).</div></div>
+<div class="fld"><label class="l" for="proofDate">Date of that proof <span class="req">*</span></label><input type="date" id="proofDate" name="proofDate" required><div class="err">Please enter the date of the document.</div></div>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">3</span>The room</legend>
+<p class="intro">Which room have we agreed on? Choose your apartment first, then tap your room on the floor plan (each apartment is one floor). If you’re not sure yet, simply pick the apartment.</p>
+<div class="grid">
+<div class="fld"><label class="l" for="apartment">Apartment <span class="req">*</span></label><select id="apartment" name="apartment" required><option value="">Choose an apartment…</option><option value="Oude Delft 107A">Oude Delft 107A</option><option value="Oude Delft 107B">Oude Delft 107B</option><option value="Oude Delft 107C">Oude Delft 107C</option></select><div class="err">Please choose an apartment.</div></div>
+<div class="fld"><label class="l" for="room">Room number (optional)</label><select id="room" name="room" disabled><option value="">Choose an apartment first</option></select><div class="hint" id="roomHint"></div></div>
+<div class="full plan">
+<div class="tabs" role="tablist" aria-label="Choose apartment"><button type="button" role="tab" data-apt="Oude Delft 107A">107A</button><button type="button" role="tab" data-apt="Oude Delft 107B">107B</button><button type="button" role="tab" data-apt="Oude Delft 107C">107C</button></div>
+<div class="tap" id="tap"><span class="arrow">☛</span> <span id="tapTxt">Tap an apartment above to see its floor plan</span></div>
+<svg id="plan" viewBox="0 0 400 275" role="group" aria-label="Floor plan"></svg>
+<div class="hint" id="planNote" style="text-align:center"></div>
+</div>
+<div class="fld"><label class="l" for="startDate">Preferred start date <span class="req">*</span></label><input type="date" id="startDate" name="startDate" required><div class="err">Please choose your preferred start date.</div></div>
+<div class="fld"><span class="l" style="font-weight:600;font-size:.92rem;color:var(--blue-d);display:block;margin-bottom:4px">Parking permit needed?</span><div class="radio"><label><input type="radio" name="parking" value="Yes"> Yes</label><label><input type="radio" name="parking" value="No" checked> No</label></div></div>
+<div class="full note">A parking permit is not guaranteed. If one is available, it costs approximately €200 per year and is issued by the municipality.</div>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">4</span>Check‑in</legend>
+<p class="intro">I’d love to hand over the keys in person and show you around.</p>
+<div class="grid"><div class="full fld"><label class="l" for="checkin">Preferred date and time for check‑in &amp; contract signing</label><input type="datetime-local" id="checkin" name="checkin"><div class="hint">This is just a wish — I will confirm a time by e‑mail.</div></div></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">5</span>Confirmation</legend>
+<p class="intro">Almost done! Two quick things to confirm.</p>
+<div class="chk fld"><input type="checkbox" id="c1" name="agreeTerms" required><label for="c1">I understand the tenancy is for a maximum of 24 months, a minimum of 12 months, and early termination costs a €250 administration fee. <span class="req">*</span></label><div class="err" style="width:100%">Please tick this box to continue.</div></div>
+<div class="chk fld"><input type="checkbox" id="c2" name="agreeData" required><label for="c2">My data is correct and I agree to its processing for the tenancy agreement. <span class="req">*</span></label><div class="err" style="width:100%">Please tick this box to continue.</div></div>
+<button class="submit" type="submit" id="btn">Send my registration</button>
+<p class="hint" style="text-align:center;margin-top:10px">Fields marked <span class="req">*</span> are required. Your details are only used for your tenancy agreement.</p>
+</fieldset>
+</form>
+
+<section class="welcome thanks" id="thanks" aria-live="polite">
+<svg class="seal" viewBox="0 0 84 84"><circle cx="42" cy="42" r="38" fill="#1f3a93"/><circle cx="42" cy="42" r="32" fill="none" stroke="#f7f0df" stroke-width="1.5"/><path d="M26 43l11 11 21-24" fill="none" stroke="#f7f0df" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<h2 id="tn">Thank you!</h2>
+<p>We look forward to welcoming you to Oude Delft 107. Your registration has been received.</p>
+<p><strong>What happens next</strong></p>
+<ol><li>I will check your details and send your tenancy agreement and the attachments to your e‑mail.</li><li>I will contact you to plan the check‑in and contract signing.</li><li>On your first day we meet at the apartment, I hand over your keys and we go through the room together.</li></ol>
+<p class="sign">See you soon, Peter van Schie</p>
+<p class="demo" id="demo" hidden>Demo mode: nothing was sent because no SUBMIT_URL has been set yet.</p>
+</section>
+<section class="welcome history" id="history" aria-labelledby="hist-h">
+<h2 id="hist-h">A bit of history</h2>
+<p class="lead">You are about to live on one of the oldest canals in the Netherlands. A few things to look out for on your walk home:</p>
+<ul>
+<li><span class="tile" aria-hidden="true">1100</span><p><b>The oldest canal in Delft.</b> The Oude Delft was probably dug around the year 1100, before the town of Delft even existed, to drain the surrounding land.</p></li>
+<li><span class="tile" aria-hidden="true">Jan</span><p><b>The leaning tower.</b> The Oude Kerk, founded in 1246, has a 75-metre brick tower that leans about two metres. Locals call it &ldquo;Scheve Jan&rdquo;, Skewed John.</p></li>
+<li><span class="tile" aria-hidden="true">1584</span><p><b>The Prinsenhof.</b> Just down the canal, at Oude Delft 175, William of Orange lived in a former convent. He was shot there in 1584, and you can still see the bullet holes in the wall.</p></li>
+<li><span class="tile" aria-hidden="true">Gold</span><p><b>Merchants&rsquo; houses.</b> In the Golden Age wealthy merchants settled on this higher ground, and many of their canal houses along the Oude Delft are now national monuments (rijksmonumenten).</p></li>
+<li><span class="tile" aria-hidden="true">Art</span><p><b>Vermeer&rsquo;s Delft.</b> The painter Johannes Vermeer was buried in the Oude Kerk in 1675, and so was the microscope pioneer Antonie van Leeuwenhoek in 1723.</p></li>
+<li><span class="tile" aria-hidden="true">1842</span><p><b>A student street.</b> Delft&rsquo;s university began in 1842 as a Royal Academy, and the former main building of TU Delft stands at Oude Delft 95. Several student societies still have their clubhouses on this canal, so you are in good company.</p></li>
+</ul>
+<p class="demo" style="margin-top:14px">Sources: Wikipedia (Oude Delft; Sint-Agathaklooster/Prinsenhof; Oude Kerk; TU Delft).</p>
+</section>
+</main>
+<footer><div>Oude Delft 107 · Delft, since the 13th century</div><div class="tiles"></div></footer>
+
+<script>
+// Paste the Google Apps Script web-app URL (…/exec) here. Leave empty for demo mode.
+const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbyd_Yy9SOrHo9Fkiyw5P4ghzXnADtC-M0eD2TCvLrv5rbbzQuy0yjiuKhJX4cdWECEXvg/exec";
+const MAX_MB = 5;
+const $ = s => document.querySelector(s);
+// Standalone mode: POST JSON as text/plain (simple request, no preflight) and read the JSON answer.
+async function postJson(obj){
+  let resp;
+  try{ resp=await fetch(SUBMIT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(obj),redirect:'follow'}); }
+  catch(e){ throw new Error('No connection to the server. Please check your internet connection and try again.'); }
+  const txt=await resp.text();
+  try{ return JSON.parse(txt); }catch(e){ throw new Error('The server gave an unexpected answer (HTTP '+resp.status+'). Please try again.'); }
+}
+
+const form = $('#f');
+const room = $('#room');
+
+// rooms
+// min dates
+const today = new Date().toISOString().slice(0,10);
+$('#startDate').min = today; $('#dob').max = today; $('#proofDate').max = today;
+
+const fieldOf = el => el.closest('.fld');
+function validateEl(el){
+  const f = fieldOf(el); if(!f) return true;
+  let ok = true;
+  if(el.type==='file'){
+    const file = el.files[0];
+    ok = !!file && file.size <= MAX_MB*1048576 && /\.(pdf|jpe?g)$/i.test(file.name);
+  } else if(el.type==='checkbox'){ ok = el.checked; }
+  else if(el.id==='phone'){ ok = /^\+\d[\d\s().-]{6,}$/.test(el.value.trim()); }
+  else if(el.required){ ok = el.checkValidity() && el.value.trim()!==''; }
+  f.classList.toggle('invalid',!ok);
+  return ok;
+}
+form.querySelectorAll('input,select').forEach(el=>{
+  el.addEventListener('blur',()=>{ if(el.required) validateEl(el); });
+  el.addEventListener('input',()=>{ if(fieldOf(el)?.classList.contains('invalid')) validateEl(el); updateProgress(); });
+  el.addEventListener('change',()=>{ if(el.required) validateEl(el); updateProgress(); });
+});
+function updateProgress(){
+  const req=[...form.querySelectorAll('[required]')];
+  const done=req.filter(e=>e.type==='file'?e.files.length:e.type==='checkbox'?e.checked:e.value.trim()!=='').length;
+  const p=Math.round(done/req.length*100);
+  $('#pb').style.width=p+'%'; $('#pt').textContent=p+'% completed';
+}
+const toB64 = file => new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
+
+form.addEventListener('submit', async e=>{
+  e.preventDefault();
+  let first=null;
+  form.querySelectorAll('[required]').forEach(el=>{ if(!validateEl(el) && !first) first=el; });
+  if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); first.focus({preventScroll:true}); return; }
+  if(form.website.value) return; // honeypot
+  const btn=$('#btn'); btn.disabled=true; btn.textContent='Sending…';
+  try{
+    const inScript = window.google && google.script && google.script.run;
+    if(inScript || SUBMIT_URL){
+      const fileKeys=['passportFile','proofFile'];
+      const obj={type:'application'};
+      new FormData(form).forEach((v,k)=>{ if(!fileKeys.includes(k) && k!=='website') obj[k]=v; });
+      for(const k of fileKeys){
+        const file=form[k].files[0];
+        obj[k+'_name']=file.name; obj[k+'_type']=file.type||'application/octet-stream';
+        obj[k+'_base64']=await toB64(file);
+      }
+      obj.submittedAt=new Date().toISOString();
+      if(inScript){
+        // Inside the Apps Script web app: google.script.run is the reliable route.
+        const res=await new Promise((ok,bad)=>google.script.run.withSuccessHandler(ok).withFailureHandler(e=>bad(new Error(e&&e.message||String(e)))).submitApplication(obj));
+        if(res&&res.ok===false) throw new Error(res.error||'error');
+      } else {
+        const res=await postJson(obj);
+        if(!res||res.ok===false) throw new Error((res&&res.error)||'The server could not save your registration.');
+      }
+    } else { await new Promise(r=>setTimeout(r,700)); $('#demo').hidden=false; }
+    const first=form.fullName.value.trim().split(/\s+/)[0];
+    $('#tn').textContent='Thank you, '+first+'!';
+    form.style.display='none'; $('.welcome').style.display='none';
+    $('#thanks').style.display='block'; window.scrollTo({top:0,behavior:'smooth'});
+  }catch(err){
+    btn.disabled=false; btn.textContent='Send my registration';
+    alert('Sorry, something went wrong while sending.\n'+(err&&err.message?err.message:'Please check your connection and try again.')+'\nYour details are still in the form.');
+  }
+});
+
+// ---- apartments, rooms and floor plans ----
+const APTS={
+ 'Oude Delft 107A':{floor:'1st floor',vb:'92 96 396 884',
+  outer:'105,340 318,340 318,110 440,110 440,340 468,340 468,940 105,940',
+  shared:[['Shared kitchen · 14 m²','322,115 437,115 437,338 322,338',380,225],['Hallway · 15 m²','215,525 375,525 375,740 110,740 110,712 262,712 262,575 215,575',300,625],['Bathroom / WC','110,575 262,575 262,712 110,712',186,648],['Stairs','385,395 440,395 440,770 385,770',412,585,'st']],
+  rooms:[[1,9,'215,352 325,352 325,525 215,525',270,438],[2,11,'122,352 213,352 213,565 122,565',168,458],[3,11,'110,740 215,740 215,915 110,915',162,830],[4,9,'218,735 325,735 325,915 218,915',271,830],[5,10,'333,790 432,790 432,935 333,935',382,862]],
+  room1:1},
+ 'Oude Delft 107B':{floor:'2nd floor',vb:'92 96 396 884',
+  outer:'105,345 468,345 468,940 105,940',terrace:'312,112 440,112 440,345 312,345',
+  shared:[['Shared kitchen · living room · 18 m²','112,352 325,352 325,665 112,665',162,560],['Hall · 7 m²','328,352 436,352 436,585 328,585',356,500],['Bathroom / WC','265,585 436,585 436,675 265,675',350,640],['Stairs','388,395 436,395 436,580 388,580',412,488,'st'],['Hallway','112,665 436,665 436,685 112,685',274,678,'tiny']],
+  rooms:[[6,11,'333,685 435,685 435,905 333,905',384,800],[7,10,'210,352 325,352 325,525 210,525',268,440],[8,10,'222,685 325,685 325,905 222,905',273,800],[9,11,'112,685 218,685 218,905 112,905',165,800]],
+  room1:6},
+ 'Oude Delft 107C':{floor:'3rd floor',vb:'18 96 392 896',
+  outer:'35,340 385,340 385,935 360,962 35,935',terrace:'247,115 380,115 380,340 247,340',
+  shared:[['Hallway','230,402 372,402 372,885 228,885',300,560,'tiny'],['Shared kitchen · 11 m²','40,350 228,350 228,512 40,512',120,420],['Bathroom','230,350 340,350 340,402 230,402',285,380],['Stairs','315,402 380,402 380,470 315,470',348,440,'st']],
+  rooms:[[10,13,'40,515 230,515 230,625 40,625',135,578],[11,9,'40,630 228,630 228,750 40,750',135,690],[12,8,'40,760 228,760 228,880 40,880',135,820],[13,10,'282,620 372,620 372,885 228,885 228,800 282,800',320,750]],
+  room1:10}
+};
+const apt=$('#apartment'), plan=$('#plan'), NS='http://www.w3.org/2000/svg';
+function el(n,a,t){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!==undefined)e.textContent=t;return e;}
+function fillRooms(){
+  const cur=room.value; room.innerHTML='';
+  const A0=APTS[apt.value];const A=A0&&{rooms:A0.rooms.map(r=>r[0])};
+  if(!A){room.disabled=true;room.innerHTML='<option value="">Choose an apartment first</option>';$('#roomHint').textContent='';return;}
+  room.disabled=false;
+  room.appendChild(new Option('Not sure yet',''));
+  A.rooms.forEach(r=>room.appendChild(new Option('Room '+r,r)));
+  $('#roomHint').textContent='Rooms '+A.rooms[0]+'–'+A.rooms[A.rooms.length-1]+' are in '+apt.value.replace('Oude Delft ','')+'.';
+  if(A.rooms.map(String).includes(cur)) room.value=cur;
+}
+function drawPlan(){
+  plan.innerHTML='';
+  document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.apt===apt.value));
+  const A=APTS[apt.value];
+  if(!A){$('#tapTxt').textContent='Tap an apartment above to see its floor plan';plan.style.display='none';$('#planNote').style.display='none';return;}
+  plan.style.display='block';$('#planNote').style.display='block';
+  $('#planNote').textContent=apt.value.replace('Oude Delft ','')+' · '+A.floor+' · Floor plan for orientation only, not to scale.';
+  plan.setAttribute('viewBox',A.vb);
+  const vb=A.vb.split(' ').map(Number);
+  if(A.terrace){plan.appendChild(el('polygon',{points:A.terrace,fill:'none',stroke:'#9aa5cf','stroke-width':1.5,'stroke-dasharray':'6 4'}));
+    const t=A.terrace.split(' ')[0].split(',').map(Number);plan.appendChild(el('text',{x:t[0]+64,y:t[1]+110,'text-anchor':'middle','font-size':12,'font-style':'italic',fill:'#5d6482','font-family':'Lora,serif'},'Terrace · 13 m²'));}
+  plan.appendChild(el('polygon',{points:A.outer,fill:'#f3ecd7',stroke:'#1f3a93','stroke-width':7,'stroke-linejoin':'miter'}));
+  A.shared.forEach(([t,pts,x,y,k])=>{
+    const g=el('g',{class:'sh'});g.appendChild(el('polygon',{points:pts}));
+    if(k==='st'){const q=pts.split(' ').map(p=>p.split(',').map(Number));const x0=q[0][0],x1=q[1][0],y0=q[0][1],y1=q[2][1];
+      for(let yy=y0+8;yy<y1;yy+=13)g.appendChild(el('line',{x1:x0+3,x2:x1-3,y1:yy,y2:yy,stroke:'#9aa5cf','stroke-width':1.5}));
+      g.appendChild(el('text',{x,y:y1+16,'font-size':11},'Stairs'));}
+    else if(k==='tiny'){}
+    else{const lines=t.split(' · ');lines.forEach((ln,i)=>g.appendChild(el('text',{x,y:y+i*14},ln)));
+      if(t.length>22&&lines.length==1){}}
+    plan.appendChild(g);
+  });
+  A.rooms.forEach(([n,m,pts,x,y])=>{
+    const g=el('g',{class:'rm','data-room':n,role:'button',tabindex:0,'aria-label':'Room '+n+', '+m+' square metres'});
+    g.appendChild(el('polygon',{points:pts}));
+    g.appendChild(el('text',{class:'n',x,y:y-2},n));
+    g.appendChild(el('text',{class:'m',x,y:y+16},m+' m²'));
+    const pick=()=>{room.value=String(n);room.dispatchEvent(new Event('change',{bubbles:true}));};
+    g.addEventListener('click',pick);
+    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();}});
+    plan.appendChild(g);
+  });
+  const by=vb[1]+vb[3]-6;
+  plan.appendChild(el('text',{x:vb[0]+vb[2]/2,y:by,'text-anchor':'middle','font-size':12,'font-family':'IM Fell English,serif','font-style':'italic',fill:'#1f3a93'},'▲ Front of the building, facing the Oude Delft canal'));
+  syncPlan();
+}
+function syncPlan(){
+  const v=room.value;
+  plan.querySelectorAll('.rm').forEach(g=>{const on=g.dataset.room===v;g.classList.toggle('sel',on);g.setAttribute('aria-pressed',on);});
+  plan.classList.toggle('pulse',!!APTS[apt.value]&&!v);
+  const t=$('#tapTxt'),ar=document.querySelector('.tap .arrow');
+  if(!APTS[apt.value]) return;
+  ar.style.display=v?'none':'inline-block';
+  t.textContent=v?'Room '+v+' selected — tap another room to change':'Tap the room you are moving into';
+}
+apt.addEventListener('change',()=>{fillRooms();drawPlan();});
+room.addEventListener('change',syncPlan);
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{apt.value=b.dataset.apt;apt.dispatchEvent(new Event('change',{bubbles:true}));}));
+fillRooms();drawPlan();
+updateProgress();
+</script>
+</body>
+</html>

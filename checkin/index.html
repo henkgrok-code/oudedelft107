@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oude Delft 107 — Check-in app</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=IM+Fell+English:ital@0;1&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1f3a93;--blue-d:#14286b;--blue-l:#dfe6f6;--cream:#f7f0df;--paper:#fcf8ec;--ink:#22263a;--muted:#5d6482;--red:#a3342a;--line:#c9d1ea}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'Lora',Georgia,serif;color:var(--ink);line-height:1.6;font-size:16px;
+background-color:var(--cream);
+background-image:radial-gradient(ellipse at top,#fffaf0 0,transparent 60%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.tiles{height:34px;background-color:var(--blue);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Crect width='34' height='34' fill='%23fcf8ec'/%3E%3Cg fill='none' stroke='%231f3a93' stroke-width='1.4'%3E%3Ccircle cx='17' cy='17' r='6'/%3E%3Cpath d='M17 5v6M17 23v6M5 17h6M23 17h6'/%3E%3C/g%3E%3Cg fill='%231f3a93'%3E%3Ccircle cx='17' cy='17' r='2'/%3E%3Cpath d='M0 0l4 0-4 4zM34 0v4l-4-4zM0 34v-4l4 4zM34 34h-4l4-4z'/%3E%3C/g%3E%3C/svg%3E");border-bottom:3px double var(--blue)}
+header{text-align:center;padding:0 16px;background:linear-gradient(#e9eefb,#f7f0df 95%)}
+.skyline{display:block;width:100%;max-width:760px;margin:0 auto;height:auto}
+.canal{height:10px;max-width:760px;margin:0 auto;background:repeating-linear-gradient(90deg,var(--blue) 0 14px,transparent 14px 20px);opacity:.25;border-radius:6px}
+.eyebrow{font-family:'IM Fell English',serif;font-style:italic;color:var(--muted);letter-spacing:.04em;margin:18px 0 0}
+h1{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--blue);font-size:clamp(2.2rem,7vw,3.6rem);line-height:1.05;margin:.15em 0 .1em}
+.addr{font-family:'IM Fell English',serif;color:var(--blue-d);font-size:1.1rem;margin:0 0 8px}
+.orn{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--blue);margin:10px auto 0;max-width:340px}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:var(--blue);opacity:.5}
+main{max-width:780px;margin:0 auto;padding:10px 16px 60px}
+.welcome{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:26px 28px;margin:22px 0;box-shadow:0 2px 0 var(--line),0 12px 30px -18px rgba(31,58,147,.45);position:relative}
+.welcome:before{content:"";position:absolute;inset:6px;border:1px solid var(--blue-l);border-radius:3px;pointer-events:none}
+.welcome p{margin:.6em 0}
+.sign{font-family:'IM Fell English',serif;font-style:italic;font-size:1.25rem;color:var(--blue);margin-top:14px!important}
+.welcome h2{font-family:'Cormorant Garamond',serif;color:var(--blue);font-size:2rem;margin:0 0 4px}
+.progress{position:sticky;top:0;z-index:5;background:rgba(247,240,223,.94);backdrop-filter:blur(4px);padding:8px 0;margin:0 -4px}
+.bar{height:6px;border-radius:4px;background:var(--blue-l);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--blue);transition:width .3s}
+.ptxt{font-size:.8rem;color:var(--muted);text-align:right;margin-top:3px}
+fieldset{border:1px solid var(--line);background:var(--paper);border-radius:6px;margin:22px 0;padding:8px 26px 24px;box-shadow:0 12px 30px -22px rgba(31,58,147,.5);border-top:4px solid var(--blue)}
+legend{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.7rem;color:var(--blue);padding:0 12px;display:flex;align-items:center;gap:10px}
+legend .no{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:1.1rem}
+.intro{color:var(--muted);font-style:italic;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+.full{grid-column:1/-1}
+label.l{display:block;font-weight:600;font-size:.92rem;color:var(--blue-d);margin-bottom:4px}
+.req{color:var(--red)}
+.hint{font-size:.8rem;color:var(--muted);margin-top:4px}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=datetime-local],select,textarea{width:100%;font:inherit;padding:10px 12px;border:1px solid #aab5da;border-radius:4px;background:#fff;color:var(--ink);transition:border .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(31,58,147,.18)}
+.file{border:1.5px dashed var(--blue);border-radius:6px;background:#f3f6fd;padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.file input{font:inherit;font-size:.9rem;max-width:100%}
+.plan{background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px;border-top:3px double var(--blue)}
+.tabs{display:flex;gap:6px;justify-content:center;margin-bottom:10px}
+.tabs button{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.2rem;padding:6px 20px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);border-radius:4px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--blue);color:#fff}
+.tap{text-align:center;font-family:'IM Fell English',serif;font-style:italic;font-size:1.15rem;color:var(--blue);margin-bottom:6px}
+.tap .arrow{display:inline-block;animation:nudge 1s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(5px)}}
+#plan{display:block;width:100%;max-width:400px;margin:0 auto;height:auto;touch-action:manipulation}
+#plan .rm{cursor:pointer;outline:none}
+#plan .rm polygon{fill:#e8eefb;stroke:var(--blue);stroke-width:2;transition:fill .15s}
+#plan .rm:hover polygon{fill:#c3d0f2}
+#plan .rm.sel polygon{fill:var(--blue)}
+#plan .rm text{font-family:'Cormorant Garamond',serif;fill:var(--blue);pointer-events:none;text-anchor:middle}
+#plan .rm .n{font-family:Lora,serif;font-size:26px;font-weight:600}#plan .rm .m{font-size:13px;font-family:Lora,serif}
+#plan .rm.sel text{fill:#fff}
+#plan .rm:focus-visible polygon{stroke-width:4}
+#plan.pulse .rm polygon{animation:pl 1.6s ease-in-out infinite}
+@keyframes pl{50%{fill:#b9c9f1}}
+#plan .sh polygon{fill:#f3ecd7;stroke:#9aa5cf;stroke-width:1.5;stroke-dasharray:5 3}
+#plan .sh text{font-family:Lora,serif;font-size:11px;fill:var(--muted);text-anchor:middle;font-style:italic}
+.err{display:none;color:var(--red);font-size:.82rem;margin-top:4px}
+.invalid .err{display:block}
+.invalid input,.invalid select,.invalid .file{border-color:var(--red)}
+.radio{display:flex;gap:22px;padding-top:4px}
+.radio label,.chk label{cursor:pointer}
+.note{background:var(--blue-l);border-left:4px solid var(--blue);padding:10px 14px;font-size:.88rem;border-radius:0 4px 4px 0;margin-top:10px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);background:#fff;border-radius:4px;margin-bottom:12px}
+.chk input{margin-top:5px;width:18px;height:18px;accent-color:var(--blue);flex:none}
+.chk.invalid{border-color:var(--red)}
+.chk .err{margin-top:2px}
+button.submit{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.4rem;letter-spacing:.03em;color:#fff;background:var(--blue);border:0;border-radius:4px;padding:14px 40px;cursor:pointer;box-shadow:0 4px 0 var(--blue-d);transition:transform .1s,box-shadow .1s;width:100%}
+button.submit:hover{background:#2747ad}
+button.submit:active{transform:translateY(3px);box-shadow:0 1px 0 var(--blue-d)}
+button.submit[disabled]{opacity:.6;cursor:wait}
+.thanks{display:none;text-align:center}
+.thanks h2{font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--blue);margin:.2em 0}
+.thanks ol{text-align:left;max-width:520px;margin:16px auto;padding-left:22px}
+.thanks li{margin:.5em 0}
+.seal{width:84px;height:84px;margin:0 auto}
+.demo{font-size:.78rem;color:var(--muted);margin-top:14px}
+footer{text-align:center;font-family:'IM Fell English',serif;color:var(--muted);padding:0 16px 24px;font-size:.95rem}
+footer .tiles{margin-top:24px}
+.hp{position:absolute;left:-9999px}
+@media(max-width:620px){.grid{grid-template-columns:1fr}fieldset{padding:6px 16px 20px}.welcome{padding:22px 18px}legend{font-size:1.45rem}}
+h3{font-family:'Cormorant Garamond',serif;color:var(--blue);font-size:1.4rem;margin:20px 0 6px}
+.seg{display:flex;gap:0;border:1.5px solid var(--blue);border-radius:6px;overflow:hidden}
+.seg button{flex:1;font:inherit;font-weight:600;padding:12px 4px;border:0;background:#fff;color:var(--blue);cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border:0}.seg button[aria-pressed=true]{background:var(--blue);color:#fff}
+.card{border:1px solid var(--line);background:#fff;border-radius:6px;padding:12px;margin-bottom:12px}
+.card .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card .row3{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px}
+.card h4{margin:0 0 8px;font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--blue-d);display:flex;justify-content:space-between;align-items:center}
+.card label.s{font-size:.78rem;color:var(--muted);display:block;margin:6px 0 2px}
+.cond{display:flex;gap:6px;margin:4px 0}
+.cond button{flex:1;padding:9px 2px;font:inherit;font-size:.9rem;border:1.5px solid var(--line);background:#fff;border-radius:4px;cursor:pointer;color:var(--ink)}
+.cond button[aria-pressed=true][data-v=Good]{background:#2f7d4f;color:#fff;border-color:#2f7d4f}
+.cond button[aria-pressed=true][data-v=Fair]{background:#c88a14;color:#fff;border-color:#c88a14}
+.cond button[aria-pressed=true][data-v=Damaged]{background:var(--red);color:#fff;border-color:var(--red)}
+.cond button[aria-pressed=true][data-v=Yes]{background:#2f7d4f;color:#fff;border-color:#2f7d4f}
+.cond button[aria-pressed=true][data-v=No]{background:var(--red);color:#fff;border-color:var(--red)}
+.btn2{font:inherit;font-weight:600;color:var(--blue);background:#fff;border:1.5px solid var(--blue);border-radius:4px;padding:10px 16px;cursor:pointer}
+.btn2.sm{padding:4px 10px;font-size:.8rem;margin-top:4px}
+.btn2.x{padding:2px 9px;border-color:var(--red);color:var(--red)}
+.addrow{text-align:center}
+.cams{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.cam{position:relative;overflow:hidden;display:inline-block}
+.cam input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;font-size:100px}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.th{width:88px;font-size:.7rem}
+.th img{width:88px;height:66px;object-fit:cover;border-radius:4px;border:1px solid var(--line);display:block}
+.th input{width:100%;font:inherit;font-size:.72rem;padding:3px;border:1px solid var(--line);border-radius:3px;margin-top:2px}
+.th .rm2{position:absolute}
+.thw{position:relative}
+.thw button{position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(163,52,42,.92);color:#fff;font-size:14px;line-height:1;cursor:pointer}
+.sig{border:1.5px dashed var(--blue);border-radius:6px;background:#fff}
+.sig canvas{display:block;width:100%;height:150px;touch-action:none}
+button.submit.alt{background:#fff;color:var(--blue);border:2px solid var(--blue);box-shadow:none;margin-top:12px}
+.modal{position:fixed;inset:0;background:rgba(20,40,107,.55);display:grid;place-items:center;z-index:50;padding:16px}
+.modal[hidden]{display:none}.gate{background:var(--cream);z-index:100}.gate input{width:100%;font:inherit;padding:12px;border:1px solid #aab5da;border-radius:4px;background:#fff}.gate input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(31,58,147,.18)}
+.mbox{background:var(--paper);border-radius:8px;padding:22px;max-width:480px;width:100%;border-top:5px solid var(--blue);max-height:90vh;overflow:auto}
+.mbox h2{font-family:'Cormorant Garamond',serif;color:var(--blue);margin:0 0 10px;font-size:1.8rem}
+.mbox table{width:100%;border-collapse:collapse;font-size:.92rem}.mbox td{padding:5px 0;border-bottom:1px solid var(--line);vertical-align:top}.mbox td:first-child{color:var(--muted);width:42%}
+.mbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.pbar{background:none}
+.progress{background:rgba(247,240,223,.94);text-align:center}
+@media(max-width:620px){.card .row3{grid-template-columns:1fr 1fr}}
+</style></head><body>
+<div class="tiles" aria-hidden="true"></div>
+<header>
+<svg class="skyline" viewBox="0 0 760 210" role="img" aria-label="Silhouette of historic canal houses with stepped gables along the Oude Delft canal">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9eefb"/><stop offset="1" stop-color="#f7f0df"/></linearGradient></defs>
+<g fill="#1f3a93">
+<!-- Oude Kerk-ish tower -->
+<path d="M40 175V80l8-6V52l8-18 8 18v22l8 6v95z" opacity=".55"/>
+<!-- house 1: stepped gable -->
+<path d="M110 175V95h10v-12h12V71h12V59h14v12h12v12h12v12h10v80z"/>
+<!-- house 2: tall stepped -->
+<path d="M262 175V80h12V66h12V52h12V38h18v14h12v14h12v14h12v95z"/>
+<!-- house 3: bell gable -->
+<path d="M410 175V92c0-12 10-14 14-24 4-9 6-18 18-18s14 9 18 18c4 10 14 12 14 24v83z"/>
+<!-- house 4 -->
+<path d="M510 175V90h10V78h12V66h12V54h14v12h12v12h12v12h10v83z"/>
+<!-- house 5 low -->
+<path d="M642 175v-70h14V93h14V81h14v12h14v12h14v70z" opacity=".8"/>
+</g>
+<g fill="#f7f0df">
+<g id="w"><rect x="0" y="0" width="12" height="20" rx="6"/></g>
+<use href="#w" x="134" y="108"/><use href="#w" x="170" y="108"/><use href="#w" x="134" y="140"/><use href="#w" x="170" y="140"/>
+<use href="#w" x="286" y="92"/><use href="#w" x="322" y="92"/><use href="#w" x="354" y="92"/><use href="#w" x="286" y="128"/><use href="#w" x="322" y="128"/><use href="#w" x="354" y="128"/>
+<use href="#w" x="428" y="106"/><use href="#w" x="454" y="106"/><use href="#w" x="428" y="140"/><use href="#w" x="454" y="140"/>
+<use href="#w" x="534" y="104"/><use href="#w" x="570" y="104"/><use href="#w" x="534" y="138"/><use href="#w" x="570" y="138"/>
+<use href="#w" x="668" y="118"/><use href="#w" x="700" y="118"/><use href="#w" x="668" y="146"/><use href="#w" x="700" y="146"/>
+<rect x="332" y="44" width="10" height="14" rx="5"/><rect x="38" y="95" width="10" height="16" rx="5" opacity=".7"/>
+</g>
+<!-- canal -->
+<rect x="0" y="175" width="760" height="35" fill="#1f3a93" opacity=".12"/>
+<g stroke="#1f3a93" stroke-width="1.5" fill="none" opacity=".45" stroke-linecap="round">
+<path d="M20 188q10-5 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0"/>
+<path d="M0 200q10-5 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0 20 0"/>
+</g>
+</svg>
+<p class="eyebrow">Verhuurdersapp · Landlord app</p>
+<h1>Oude Delft 107</h1>
+<p class="addr">Check-in · Check-out · Periodieke inspectie</p>
+<div class="orn" aria-hidden="true">❖</div>
+</header>
+<main>
+<form id="f" novalidate>
+<div class="progress"><div class="ptxt" id="pt" style="text-align:center;font-family:'IM Fell English',serif;font-size:1rem;color:var(--blue)">Nieuw rapport</div></div>
+
+<fieldset>
+<legend><span class="no">1</span>Event &amp; kamer</legend>
+<p class="intro">Wat doe je vandaag, en bij wie?</p>
+<div class="seg" id="evSeg" role="radiogroup"><button type="button" data-v="Check-in" aria-pressed="true">Check-in</button><button type="button" data-v="Check-out" aria-pressed="false">Check-out</button><button type="button" data-v="Periodic" aria-pressed="false">Periodic</button></div>
+<div class="grid" style="margin-top:14px">
+<div class="fld"><label class="l" for="apartment">Apartment <span class="req">*</span></label><select id="apartment" required><option value="">Kies een apartment…</option><option value="Oude Delft 107A">Oude Delft 107A</option><option value="Oude Delft 107B">Oude Delft 107B</option><option value="Oude Delft 107C">Oude Delft 107C</option></select><div class="err">Kies een apartment.</div></div>
+<div class="fld"><label class="l" for="room">Kamer <span id="roomReq" class="req">*</span></label><select id="room" disabled><option value="">Kies eerst een apartment</option></select><div class="hint" id="roomHint"></div><div class="err">Kies een kamer.</div></div>
+<div class="full plan">
+<div class="tabs" role="tablist" aria-label="Kies apartment"><button type="button" role="tab" data-apt="Oude Delft 107A">107A</button><button type="button" role="tab" data-apt="Oude Delft 107B">107B</button><button type="button" role="tab" data-apt="Oude Delft 107C">107C</button></div>
+<div class="tap" id="tap"><span class="arrow">☛</span> <span id="tapTxt"></span></div>
+<svg id="plan" viewBox="0 0 400 275" role="group" aria-label="Plattegrond"></svg>
+<div class="hint" id="planNote" style="text-align:center"></div>
+</div>
+<div class="fld"><label class="l" for="tenant">Huurder (naam) <span class="req">*</span></label><input type="text" id="tenant" autocomplete="off"><div class="err">Vul de naam van de huurder in.</div></div>
+<div class="fld"><label class="l" for="tenantEmail">Huurder e-mail</label><input type="email" id="tenantEmail" autocomplete="off" inputmode="email"><div class="hint">Nodig om een kopie te mailen.</div><div class="err">Ongeldig e-mailadres.</div></div>
+<div class="fld"><label class="l" for="date">Datum <span class="req">*</span></label><input type="date" id="date"><div class="err">Kies een datum.</div></div>
+<div class="fld"><span class="l" style="font-weight:600;font-size:.92rem;color:var(--blue-d);display:block;margin-bottom:4px">Huurder aanwezig? (Tenant present)</span><div class="radio"><label><input type="radio" name="present" value="Yes" checked> Yes</label><label><input type="radio" name="present" value="No"> No</label></div></div>
+<div class="full fld" id="otherPersonBox" style="display:none"><label class="l" for="otherPerson">Gemachtigde (naam + ID) — Authorised other person</label><input type="text" id="otherPerson"></div>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">2</span>Meterstanden</legend>
+<p class="intro">Per meter: nummer, stand en een foto van de meter. Je kunt meerdere foto's toevoegen.</p>
+<div id="meters"></div>
+<div class="addrow"><button type="button" class="btn2" id="addMeter">＋ Meter toevoegen</button></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">3</span>Sleutels</legend>
+<p class="intro">Aantal sleutels dat is overhandigd (Keys handed over).</p>
+<div class="grid" id="keys"></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">4</span>Inventaris kamer</legend>
+<p class="intro">Tik de staat per item. Foto's en opmerkingen zijn optioneel.</p>
+<div id="inventory"></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">5</span>Staat kamer &amp; gedeelde ruimtes</legend>
+<div class="grid" id="general"></div>
+<h3>Shared facilities</h3>
+<div id="shared"></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">6</span>Schades &amp; gebreken</legend>
+<p class="intro">Bestaande schade of gebreken (Existing damage / defects). Laat leeg als er niets is.</p>
+<div id="damages"></div>
+<div class="addrow"><button type="button" class="btn2" id="addDamage">＋ Schade toevoegen</button></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">7</span>Room &amp; kitchen photos</legend>
+<p class="intro">Maak foto's van de kamer, de keuken, de badkamer en overige gedeelde ruimtes. Foto's worden verkleind tot max. 1600 px.</p>
+<div id="roomPhotos"></div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">8</span>Handtekeningen</legend>
+<p class="intro">Teken met je vinger of muis.</p>
+<div class="grid">
+<div class="fld"><label class="l">Huurder — Tenant <span id="tenantNameSig" style="font-weight:400"></span></label><div class="sig"><canvas id="sigT"></canvas></div><button type="button" class="btn2 sm" data-clear="sigT">Wissen</button></div>
+<div class="fld"><label class="l">Verhuurder — Peter van Schie</label><div class="sig"><canvas id="sigL"></canvas></div><button type="button" class="btn2 sm" data-clear="sigL">Wissen</button></div>
+<div class="full fld"><label class="l" for="notes">Overige opmerkingen (Remarks)</label><textarea id="notes" rows="3"></textarea></div>
+</div>
+</fieldset>
+
+<fieldset>
+<legend><span class="no">9</span>Opslaan</legend>
+<p class="intro">Kies of de huurder meteen een kopie per e-mail krijgt, vanuit jouw eigen Gmail.</p>
+<button class="submit" type="button" id="btnMail">Save &amp; email copy to tenant</button>
+<button class="submit alt" type="button" id="btnSave">Save only</button>
+<p class="hint" style="text-align:center;margin-top:10px" id="demoNote"></p>
+</fieldset>
+</form>
+
+<section class="welcome thanks" id="thanks" aria-live="polite"><h2>Opgeslagen ✔</h2><p id="thanksTxt"></p><p id="thanksLinks"></p><button type="button" class="btn2" onclick="location.reload()">Nieuw rapport</button></section>
+</main>
+<div id="modal" class="modal" hidden><div class="mbox"><h2>Controleer voor verzenden</h2><div id="mBody"></div><div class="mbtns"><button type="button" class="btn2" id="mCancel">Annuleer</button><button type="button" class="submit" id="mGo" style="width:auto;padding:10px 24px;font-size:1.2rem">Opslaan &amp; mailen</button></div></div></div>
+<div id="gate" class="modal gate" hidden><div class="mbox" style="text-align:center"><h2>Oude Delft 107</h2><p>Check-in app voor de verhuurder.<br>Vul je pincode in.</p><input type="password" id="gatePin" inputmode="numeric" autocomplete="current-password" placeholder="Pincode" style="text-align:center;font-size:1.3rem"><p id="gateErr" style="color:var(--red);min-height:1.4em;margin:8px 0 0"></p><button type="button" class="submit" id="gateBtn" style="margin-top:6px">Openen</button></div></div>
+<div id="busy" class="modal" hidden><div class="mbox" style="text-align:center"><h2 id="busyTxt">Bezig met opslaan…</h2><p>Foto's uploaden en rapport maken kan even duren. Sluit deze pagina niet.</p></div></div>
+<footer><div>Oude Delft 107 · Delft</div><div class="tiles"></div></footer>
+
+<script>
+// ===== Instellingen =====
+// In Apps Script (HtmlService) wordt google.script.run gebruikt. Lokaal/zelfstandig kun je hier de /exec-URL invullen (fallback via fetch).
+const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbyd_Yy9SOrHo9Fkiyw5P4ghzXnADtC-M0eD2TCvLrv5rbbzQuy0yjiuKhJX4cdWECEXvg/exec";
+const PIN = "__PIN__"; // wordt door Code.gs ingevuld bij het serveren van de pagina
+const $ = s => document.querySelector(s);
+// Standalone mode: POST JSON as text/plain (simple request, no preflight) and read the JSON answer.
+async function postJson(obj){
+  let resp;
+  try{ resp=await fetch(SUBMIT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(obj),redirect:'follow'}); }
+  catch(e){ throw new Error('No connection to the server. Please check your internet connection and try again.'); }
+  const txt=await resp.text();
+  try{ return JSON.parse(txt); }catch(e){ throw new Error('The server gave an unexpected answer (HTTP '+resp.status+'). Please try again.'); }
+}
+
+const room = $('#room');
+function h(tag,attrs,...kids){const e=document.createElement(tag);for(const k in (attrs||{})){if(k==='class')e.className=attrs[k];else if(k==='text')e.textContent=attrs[k];else e.setAttribute(k,attrs[k]);}kids.flat().forEach(c=>e.append(c));return e;}
+let EVENT='Check-in';
+
+// ===== Foto's =====
+const PHOTOS=[];let pid=0;
+async function resizeJpeg(file,max=1600){
+  let bmp;
+  try{bmp=await createImageBitmap(file,{imageOrientation:'from-image'});}
+  catch(e){bmp=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=URL.createObjectURL(file);});}
+  const w=bmp.width||bmp.naturalWidth,hh=bmp.height||bmp.naturalHeight,k=Math.min(1,max/Math.max(w,hh));
+  const c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(hh*k);
+  c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',0.8);
+}
+function photoWidget(category,opt){
+  opt=opt||{};const w={ids:[]};
+  const thumbs=h('div',{class:'thumbs'});
+  const add=data=>{
+    const p={id:++pid,category,caption:'',label:opt.label||'',data};PHOTOS.push(p);w.ids.push(p.id);
+    const t=h('div',{class:'th'});const wrap=h('div',{class:'thw'});
+    const x=h('button',{type:'button','aria-label':'Verwijder foto',text:'×'});
+    x.onclick=()=>{PHOTOS.splice(PHOTOS.indexOf(p),1);w.ids.splice(w.ids.indexOf(p.id),1);t.remove();};
+    wrap.append(h('img',{src:data,alt:''}),x);t.append(wrap);
+    if(opt.caption){const c=h('input',{type:'text',placeholder:'Bijschrift / caption'});c.oninput=()=>p.caption=c.value;t.append(c);}
+    thumbs.append(t);
+  };
+  const mk=(txt,cap)=>{const i=h('input',{type:'file',accept:'image/*',multiple:''});if(cap)i.setAttribute('capture','environment');
+    i.onchange=async()=>{for(const f of [...i.files]){try{add(await resizeJpeg(f));}catch(e){alert('Foto kon niet worden gelezen.');}}i.value='';};
+    return h('label',{class:'btn2 cam'},txt,i);};
+  w.el=h('div',{},h('div',{class:'cams'},mk('📷 Foto maken',true),mk('🖼 Uit galerij',false)),thumbs);
+  w.setLabel=l=>opt.label=l;
+  return w;
+}
+
+// ===== Knoppenreeks (Good/Fair/Damaged, Yes/No) =====
+function btnGroup(values,def){
+  let v=def||'';const e=h('div',{class:'cond'});
+  const bs=values.map(x=>{const b=h('button',{type:'button','data-v':x,'aria-pressed':x===v,text:x});b.onclick=()=>{v=(v===x&&!def)?'':x;bs.forEach(o=>o.setAttribute('aria-pressed',o.dataset.v===v));};return b;});
+  e.append(...bs);return {el:e,get:()=>v};
+}
+
+// ===== Meters =====
+const METERS=[];
+const UNITS={Electricity:'kWh',Gas:'m3',Water:'m3',Other:''};
+function addMeter(type){
+  const sel=h('select',{},...Object.keys(UNITS).map(t=>h('option',{text:t,value:t})));sel.value=type||'Electricity';
+  const unit=h('input',{type:'text',value:UNITS[sel.value]});
+  const num=h('input',{type:'text',placeholder:'bv. 12345678'});
+  const rd=h('input',{type:'text',inputmode:'decimal',placeholder:'0'});
+  const nt=h('input',{type:'text'});
+  const pw=photoWidget('Meter',{label:sel.value});
+  sel.onchange=()=>{unit.value=UNITS[sel.value];pw.setLabel(sel.value);};
+  const rm=h('button',{type:'button',class:'btn2 x',text:'×','aria-label':'Verwijder meter'});
+  const card=h('div',{class:'card'},h('h4',{},h('span',{text:'Meter'}),rm),
+    h('div',{class:'row3'},h('div',{},h('label',{class:'s',text:'Type'}),sel),h('div',{},h('label',{class:'s',text:'Meternummer / ID'}),num),h('div',{},h('label',{class:'s',text:'Stand (reading)'}),rd)),
+    h('div',{class:'row'},h('div',{},h('label',{class:'s',text:'Eenheid (unit)'}),unit),h('div',{},h('label',{class:'s',text:'Opmerking'}),nt)),pw.el);
+  const m={sel,unit,num,rd,nt,pw,card};METERS.push(m);
+  rm.onclick=()=>{m.pw.ids.slice().forEach(id=>{const i=PHOTOS.findIndex(p=>p.id===id);if(i>-1)PHOTOS.splice(i,1);});METERS.splice(METERS.indexOf(m),1);card.remove();};
+  $('#meters').append(card);
+}
+['Electricity','Gas','Water'].forEach(addMeter);
+$('#addMeter').onclick=()=>addMeter('Other');
+
+// ===== Sleutels =====
+const KEYS={};
+[['room','Room key'],['front','Front door key (107A/B/C)'],['mailbox','Mailbox key'],['other','Other']].forEach(([k,l])=>{
+  const i=h('input',{type:'number',min:'0',inputmode:'numeric',placeholder:'0'});KEYS[k]=i;
+  $('#keys').append(h('div',{class:'fld'},h('label',{class:'l',text:l}),i));
+});
+KEYS.otherDesc=h('input',{type:'text',placeholder:'Omschrijving overige sleutel'});$('#keys').append(h('div',{class:'full fld'},KEYS.otherDesc));
+
+// ===== Inventaris =====
+const INV_ITEMS=['Bed + mattress','Desk','Desk chair','Wardrobe / closet','Shelves / bookcase','Lamp(s)','Curtains / blinds','Floor','Walls and ceiling','Windows and window frames','Door and lock','Sockets / light switches','Heating / radiator','Internet connection (wifi / socket)','Other:'];
+const INV=INV_ITEMS.map(name=>{
+  const q=h('input',{type:'number',min:'0',value:/^(Floor|Walls|Windows|Door|Sockets|Heating|Internet)/.test(name)?'':'1',inputmode:'numeric'});
+  const c=btnGroup(['Good','Fair','Damaged']);const r=h('input',{type:'text',placeholder:name==='Other:'?'Omschrijving item':'Opmerking'});
+  const pw=photoWidget('Inventory',{label:name});
+  $('#inventory').append(h('div',{class:'card'},h('h4',{text:name}),h('div',{class:'row'},h('div',{},h('label',{class:'s',text:'Quantity'}),q),h('div',{},h('label',{class:'s',text:'Remarks'}),r)),c.el,pw.el));
+  return {name,q,c,r,pw};
+});
+
+// ===== Algemeen / gedeeld =====
+const G={};
+function condSelect(){return h('select',{},h('option',{value:'',text:'—'}),...['Perfect','Good','Average','Poor'].map(x=>h('option',{text:x,value:x})));}
+G.roomCond=condSelect();G.roomRem=h('input',{type:'text'});G.sharedCond=condSelect();G.sharedRem=h('input',{type:'text'});
+$('#general').append(
+ h('div',{class:'fld'},h('label',{class:'l',text:'Room in general'}),G.roomCond,h('label',{class:'s hint',text:'Remarks'}),G.roomRem),
+ h('div',{class:'fld'},h('label',{class:'l',text:'House in general (shared areas)'}),G.sharedCond,h('label',{class:'s hint',text:'Remarks'}),G.sharedRem));
+G.clean={};
+[['room','Room clean?'],['kitchen','Kitchen clean?'],['bath','Bathroom / toilet clean?']].forEach(([k,l])=>{G.clean[k]=btnGroup(['Yes','No']);$('#general').append(h('div',{class:'fld'},h('label',{class:'l',text:l}),G.clean[k].el));});
+const SH_ITEMS=['Fridge','Hob / oven / extractor','Washing machine','Dryer','Vacuum cleaner','Shower / bath','Toilet','Hallway / stairs'];
+const SH=SH_ITEMS.map(name=>{
+  const wk=btnGroup(['Yes','No']);const c=btnGroup(['Good','Fair','Damaged']);const r=h('input',{type:'text',placeholder:'Opmerking'});
+  $('#shared').append(h('div',{class:'card'},h('h4',{text:name}),h('label',{class:'s',text:'Present / working?'}),wk.el,h('label',{class:'s',text:'Condition'}),c.el,r));
+  return {name,wk,c,r};
+});
+
+// ===== Schades =====
+const DMG=[];
+function addDamage(){
+  const loc=h('input',{type:'text',placeholder:'bv. Room 3, wall near window'});const d=h('textarea',{rows:'2'});const pw=photoWidget('Damage',{label:'Damage'});
+  const rm=h('button',{type:'button',class:'btn2 x',text:'×'});
+  const card=h('div',{class:'card'},h('h4',{},h('span',{text:'Schade / defect'}),rm),h('label',{class:'s',text:'Location'}),loc,h('label',{class:'s',text:'Description'}),d,pw.el);
+  const o={loc,d,pw};DMG.push(o);rm.onclick=()=>{o.pw.ids.slice().forEach(id=>{const i=PHOTOS.findIndex(p=>p.id===id);if(i>-1)PHOTOS.splice(i,1);});DMG.splice(DMG.indexOf(o),1);card.remove();};
+  $('#damages').append(card);
+}
+$('#addDamage').onclick=addDamage;
+
+// ===== Kamer- en keukenfoto's =====
+['Room','Kitchen','Bathroom','Other shared area'].forEach(cat=>{
+  const w=photoWidget(cat,{caption:true,label:cat});
+  $('#roomPhotos').append(h('div',{class:'card'},h('h4',{text:cat}),w.el));
+});
+
+// ===== Handtekeningen =====
+function initSig(id){
+  const c=document.getElementById(id),ctx=c.getContext('2d');let dirty=false,down=false;
+  function fit(){const r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;const img=dirty?c.toDataURL():null;c.width=r.width*d;c.height=r.height*d;ctx.scale(d,d);ctx.lineWidth=2.2;ctx.lineCap='round';ctx.strokeStyle='#14286b';
+    if(img){const i=new Image();i.onload=()=>ctx.drawImage(i,0,0,r.width,r.height);i.src=img;}}
+  fit();window.addEventListener('resize',()=>{if(c.getBoundingClientRect().width)fit();});
+  const pos=e=>{const r=c.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];};
+  c.addEventListener('pointerdown',e=>{down=true;dirty=true;c.setPointerCapture(e.pointerId);const [x,y]=pos(e);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+.1,y+.1);ctx.stroke();e.preventDefault();});
+  c.addEventListener('pointermove',e=>{if(!down)return;const [x,y]=pos(e);ctx.lineTo(x,y);ctx.stroke();e.preventDefault();});
+  ['pointerup','pointercancel','pointerleave'].forEach(t=>c.addEventListener(t,()=>down=false));
+  return {empty:()=>!dirty,data:()=>dirty?c.toDataURL('image/png'):'',clear:()=>{ctx.clearRect(0,0,c.width,c.height);dirty=false;}};
+}
+const SIG={T:initSig('sigT'),L:initSig('sigL')};
+document.querySelectorAll('[data-clear]').forEach(b=>b.onclick=()=>SIG[b.dataset.clear==='sigT'?'T':'L'].clear());
+
+// ===== Event, datum, aanwezigheid =====
+const today=new Date();$('#date').value=new Date(today.getTime()-today.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+document.querySelectorAll('#evSeg button').forEach(b=>b.onclick=()=>{EVENT=b.dataset.v;document.querySelectorAll('#evSeg button').forEach(o=>o.setAttribute('aria-pressed',o===b));
+  $('#pt').textContent=EVENT==='Periodic'?'Periodieke inspectie':EVENT==='Check-out'?'Check-out rapport':'Check-in rapport';$('#roomReq').style.display=EVENT==='Periodic'?'none':'';});
+document.querySelectorAll('[name=present]').forEach(r=>r.onchange=()=>$('#otherPersonBox').style.display=document.querySelector('[name=present]:checked').value==='No'?'block':'none');
+$('#tenant').addEventListener('input',()=>$('#tenantNameSig').textContent=$('#tenant').value?'— '+$('#tenant').value:'');
+
+// ===== Plattegrond (hergebruikt van het aanmeldformulier) =====
+// ---- apartments, rooms and floor plans ----
+const APTS={
+ 'Oude Delft 107A':{floor:'1st floor',vb:'92 96 396 884',
+  outer:'105,340 318,340 318,110 440,110 440,340 468,340 468,940 105,940',
+  shared:[['Shared kitchen · 14 m²','322,115 437,115 437,338 322,338',380,225],['Hallway · 15 m²','215,525 375,525 375,740 110,740 110,712 262,712 262,575 215,575',300,625],['Bathroom / WC','110,575 262,575 262,712 110,712',186,648],['Stairs','385,395 440,395 440,770 385,770',412,585,'st']],
+  rooms:[[1,9,'215,352 325,352 325,525 215,525',270,438],[2,11,'122,352 213,352 213,565 122,565',168,458],[3,11,'110,740 215,740 215,915 110,915',162,830],[4,9,'218,735 325,735 325,915 218,915',271,830],[5,10,'333,790 432,790 432,935 333,935',382,862]],
+  room1:1},
+ 'Oude Delft 107B':{floor:'2nd floor',vb:'92 96 396 884',
+  outer:'105,345 468,345 468,940 105,940',terrace:'312,112 440,112 440,345 312,345',
+  shared:[['Shared kitchen · living room · 18 m²','112,352 325,352 325,665 112,665',162,560],['Hall · 7 m²','328,352 436,352 436,585 328,585',356,500],['Bathroom / WC','265,585 436,585 436,675 265,675',350,640],['Stairs','388,395 436,395 436,580 388,580',412,488,'st'],['Hallway','112,665 436,665 436,685 112,685',274,678,'tiny']],
+  rooms:[[6,11,'333,685 435,685 435,905 333,905',384,800],[7,10,'210,352 325,352 325,525 210,525',268,440],[8,10,'222,685 325,685 325,905 222,905',273,800],[9,11,'112,685 218,685 218,905 112,905',165,800]],
+  room1:6},
+ 'Oude Delft 107C':{floor:'3rd floor',vb:'18 96 392 896',
+  outer:'35,340 385,340 385,935 360,962 35,935',terrace:'247,115 380,115 380,340 247,340',
+  shared:[['Hallway','230,402 372,402 372,885 228,885',300,560,'tiny'],['Shared kitchen · 11 m²','40,350 228,350 228,512 40,512',120,420],['Bathroom','230,350 340,350 340,402 230,402',285,380],['Stairs','315,402 380,402 380,470 315,470',348,440,'st']],
+  rooms:[[10,13,'40,515 230,515 230,625 40,625',135,578],[11,9,'40,630 228,630 228,750 40,750',135,690],[12,8,'40,760 228,760 228,880 40,880',135,820],[13,10,'282,620 372,620 372,885 228,885 228,800 282,800',320,750]],
+  room1:10}
+};
+const apt=$('#apartment'), plan=$('#plan'), NS='http://www.w3.org/2000/svg';
+function el(n,a,t){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!==undefined)e.textContent=t;return e;}
+function fillRooms(){
+  const cur=room.value; room.innerHTML='';
+  const A0=APTS[apt.value];const A=A0&&{rooms:A0.rooms.map(r=>r[0])};
+  if(!A){room.disabled=true;room.innerHTML='<option value="">Choose an apartment first</option>';$('#roomHint').textContent='';return;}
+  room.disabled=false;
+  room.appendChild(new Option('Not sure yet',''));
+  A.rooms.forEach(r=>room.appendChild(new Option('Room '+r,r)));
+  $('#roomHint').textContent='Rooms '+A.rooms[0]+'–'+A.rooms[A.rooms.length-1]+' are in '+apt.value.replace('Oude Delft ','')+'.';
+  if(A.rooms.map(String).includes(cur)) room.value=cur;
+}
+function drawPlan(){
+  plan.innerHTML='';
+  document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.apt===apt.value));
+  const A=APTS[apt.value];
+  if(!A){$('#tapTxt').textContent='Tap an apartment above to see its floor plan';plan.style.display='none';$('#planNote').style.display='none';return;}
+  plan.style.display='block';$('#planNote').style.display='block';
+  $('#planNote').textContent=apt.value.replace('Oude Delft ','')+' · '+A.floor+' · Floor plan for orientation only, not to scale.';
+  plan.setAttribute('viewBox',A.vb);
+  const vb=A.vb.split(' ').map(Number);
+  if(A.terrace){plan.appendChild(el('polygon',{points:A.terrace,fill:'none',stroke:'#9aa5cf','stroke-width':1.5,'stroke-dasharray':'6 4'}));
+    const t=A.terrace.split(' ')[0].split(',').map(Number);plan.appendChild(el('text',{x:t[0]+64,y:t[1]+110,'text-anchor':'middle','font-size':12,'font-style':'italic',fill:'#5d6482','font-family':'Lora,serif'},'Terrace · 13 m²'));}
+  plan.appendChild(el('polygon',{points:A.outer,fill:'#f3ecd7',stroke:'#1f3a93','stroke-width':7,'stroke-linejoin':'miter'}));
+  A.shared.forEach(([t,pts,x,y,k])=>{
+    const g=el('g',{class:'sh'});g.appendChild(el('polygon',{points:pts}));
+    if(k==='st'){const q=pts.split(' ').map(p=>p.split(',').map(Number));const x0=q[0][0],x1=q[1][0],y0=q[0][1],y1=q[2][1];
+      for(let yy=y0+8;yy<y1;yy+=13)g.appendChild(el('line',{x1:x0+3,x2:x1-3,y1:yy,y2:yy,stroke:'#9aa5cf','stroke-width':1.5}));
+      g.appendChild(el('text',{x,y:y1+16,'font-size':11},'Stairs'));}
+    else if(k==='tiny'){}
+    else{const lines=t.split(' · ');lines.forEach((ln,i)=>g.appendChild(el('text',{x,y:y+i*14},ln)));
+      if(t.length>22&&lines.length==1){}}
+    plan.appendChild(g);
+  });
+  A.rooms.forEach(([n,m,pts,x,y])=>{
+    const g=el('g',{class:'rm','data-room':n,role:'button',tabindex:0,'aria-label':'Room '+n+', '+m+' square metres'});
+    g.appendChild(el('polygon',{points:pts}));
+    g.appendChild(el('text',{class:'n',x,y:y-2},n));
+    g.appendChild(el('text',{class:'m',x,y:y+16},m+' m²'));
+    const pick=()=>{room.value=String(n);room.dispatchEvent(new Event('change',{bubbles:true}));};
+    g.addEventListener('click',pick);
+    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();}});
+    plan.appendChild(g);
+  });
+  const by=vb[1]+vb[3]-6;
+  plan.appendChild(el('text',{x:vb[0]+vb[2]/2,y:by,'text-anchor':'middle','font-size':12,'font-family':'IM Fell English,serif','font-style':'italic',fill:'#1f3a93'},'▲ Front of the building, facing the Oude Delft canal'));
+  syncPlan();
+}
+function syncPlan(){
+  const v=room.value;
+  plan.querySelectorAll('.rm').forEach(g=>{const on=g.dataset.room===v;g.classList.toggle('sel',on);g.setAttribute('aria-pressed',on);});
+  plan.classList.toggle('pulse',!!APTS[apt.value]&&!v);
+  const t=$('#tapTxt'),ar=document.querySelector('.tap .arrow');
+  if(!APTS[apt.value]) return;
+  ar.style.display=v?'none':'inline-block';
+  t.textContent=v?'Room '+v+' selected — tap another room to change':'Tap the room you are moving into';
+}
+apt.addEventListener('change',()=>{fillRooms();drawPlan();});
+room.addEventListener('change',syncPlan);
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{apt.value=b.dataset.apt;apt.dispatchEvent(new Event('change',{bubbles:true}));}));
+fillRooms();drawPlan();
+
+
+// ===== Verzamelen, valideren, verzenden =====
+const MAIL_CATS=['Room','Kitchen','Bathroom','Other shared area','Meter'];
+function fieldErr(id,bad){const f=document.getElementById(id).closest('.fld');f.classList.toggle('invalid',bad);return bad;}
+function validate(needMail){
+  let first=null;const chk=(id,bad)=>{if(fieldErr(id,bad)&&!first)first=id;};
+  chk('apartment',!apt.value);chk('room',EVENT!=='Periodic'&&!room.value);chk('tenant',!$('#tenant').value.trim());chk('date',!$('#date').value);
+  const em=$('#tenantEmail').value.trim();chk('tenantEmail',(needMail&&!em)||(em&&!/^\S+@\S+\.\S+$/.test(em)));
+  if(first){document.getElementById(first).scrollIntoView({behavior:'smooth',block:'center'});return false;}
+  if(EVENT!=='Periodic'&&(SIG.T.empty()||SIG.L.empty())&&!confirm('Er ontbreekt een handtekening. Toch doorgaan?'))return false;
+  return true;
+}
+function collect(sendEmail){
+  const A=APTS[apt.value];const short=apt.value.replace('Oude Delft ','');
+  const r=A&&A.rooms.find(x=>String(x[0])===room.value);
+  return {type:'checkin',event:EVENT,date:$('#date').value,apartment:apt.value,apartmentShort:short,room:room.value,m2:r?r[1]:'',
+   tenant:$('#tenant').value.trim(),tenantEmail:$('#tenantEmail').value.trim(),
+   present:document.querySelector('[name=present]:checked').value,otherPerson:$('#otherPerson').value.trim(),
+   meters:METERS.map(m=>({type:m.sel.value,number:m.num.value.trim(),reading:m.rd.value.trim().replace(',','.'),unit:m.unit.value.trim(),notes:m.nt.value.trim(),photoIds:m.pw.ids.slice()})).filter(m=>m.reading||m.number||m.photoIds.length),
+   keys:{room:KEYS.room.value,front:KEYS.front.value,mailbox:KEYS.mailbox.value,other:KEYS.other.value,otherDesc:KEYS.otherDesc.value},
+   inventory:INV.map(i=>({item:i.name,qty:i.q.value,condition:i.c.get(),remarks:i.r.value.trim(),photoIds:i.pw.ids.slice()})),
+   general:{roomCondition:G.roomCond.value,roomRemarks:G.roomRem.value,sharedCondition:G.sharedCond.value,sharedRemarks:G.sharedRem.value,roomClean:G.clean.room.get(),kitchenClean:G.clean.kitchen.get(),bathClean:G.clean.bath.get()},
+   shared:SH.map(s=>({item:s.name,working:s.wk.get(),condition:s.c.get(),remarks:s.r.value.trim()})),
+   damages:DMG.map(d=>({location:d.loc.value.trim(),description:d.d.value.trim(),photoIds:d.pw.ids.slice()})).filter(d=>d.location||d.description||d.photoIds.length),
+   photos:PHOTOS.map(p=>({id:p.id,category:p.category,caption:p.caption,label:p.label,data:p.data})),
+   notes:$('#notes').value.trim(),signatures:{tenant:SIG.T.data(),landlord:SIG.L.data()},sendEmail:!!sendEmail};
+}
+const IN_SCRIPT=!!(window.google&&google.script&&google.script.run);
+const MAX_BODY=45*1024*1024; // Apps Script POST limit is ~50 MB
+let pinValue=IN_SCRIPT?PIN:'';
+function shrinkPhoto(data,max,q){return new Promise(res=>{const i=new Image();i.onload=()=>{const k=Math.min(1,max/Math.max(i.width,i.height));const c=document.createElement('canvas');c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext('2d').drawImage(i,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q));};i.onerror=()=>res(data);i.src=data;});}
+async function fitPayload(payload){
+  const size=()=>JSON.stringify(payload).length;
+  if(size()<=MAX_BODY)return;
+  for(const [max,q] of [[1200,0.7],[900,0.6],[640,0.5]]){
+    for(const p of payload.photos)p.data=await shrinkPhoto(p.data,max,q);
+    if(size()<=MAX_BODY)return;
+  }
+  throw new Error('Er zijn te veel foto\'s om in één keer te versturen. Sla eerst op zonder een deel van de foto\'s en maak een tweede rapport, of verwijder wat foto\'s.');
+}
+async function transport(payload){
+  if(IN_SCRIPT){
+    return new Promise((res,rej)=>google.script.run.withSuccessHandler(res).withFailureHandler(e=>rej(new Error(e&&e.message||String(e)))).submitCheckin(payload,PIN));
+  }
+  if(SUBMIT_URL){
+    await fitPayload(payload);
+    payload.pin=pinValue;
+    const r=await postJson(payload);
+    if(r&&r.ok===false&&/pincode/i.test(r.error||'')){sessionStorage.removeItem('od107pin');showGate('De pincode is niet meer geldig. Vul hem opnieuw in.');}
+    return r;
+  }
+  return new Promise(r=>setTimeout(()=>r({ok:true,demo:true}),900));
+}
+// ---- PIN gate (standalone mode): the PIN is checked by the server ----
+function showGate(msg){const g=$('#gate');g.hidden=false;$('#gateErr').textContent=msg||'';setTimeout(()=>$('#gatePin').focus(),50);}
+async function checkPin(pin){const r=await postJson({action:'checkPin',pin});return !!(r&&r.ok);}
+async function gateGo(){
+  const pin=$('#gatePin').value.trim();if(!pin)return;
+  const b=$('#gateBtn');b.disabled=true;b.textContent='Controleren…';$('#gateErr').textContent='';
+  try{
+    if(await checkPin(pin)){pinValue=pin;sessionStorage.setItem('od107pin',pin);$('#gate').hidden=true;$('#gatePin').value='';}
+    else $('#gateErr').textContent='Onjuiste pincode.';
+  }catch(e){$('#gateErr').textContent=e.message;}
+  b.disabled=false;b.textContent='Openen';
+}
+if(!IN_SCRIPT&&SUBMIT_URL){
+  $('#gateBtn').onclick=gateGo;$('#gatePin').addEventListener('keydown',e=>{if(e.key==='Enter')gateGo();});
+  const saved=sessionStorage.getItem('od107pin');
+  showGate('');
+  if(saved){checkPin(saved).then(ok=>{if(ok){pinValue=saved;$('#gate').hidden=true;}else sessionStorage.removeItem('od107pin');}).catch(()=>{});}
+}
+async function run(sendEmail){
+  const payload=collect(sendEmail);$('#modal').hidden=true;$('#busy').hidden=false;
+  try{
+    const res=await transport(payload);
+    if(res&&res.ok===false)throw new Error(res.error||'Onbekende fout');
+    $('#f').style.display='none';$('#thanks').style.display='block';
+    let t='Het rapport is opgeslagen.';
+    if(res.demo)t='Demo-modus: er is niets verstuurd (geen Apps Script gekoppeld).';
+    else if(res.unknown)t='Verzonden. Controleer in je Drive of het rapport is aangemaakt.';
+    else if(sendEmail)t=res.emailSent?'Het rapport is opgeslagen en een kopie is gemaild naar '+payload.tenantEmail+' ('+(res.attachedPhotos||0)+' foto\'s'+(res.photosAsLink?' via deellink':' als bijlage')+').':'Het rapport is opgeslagen, maar de e-mail kon niet worden verstuurd.'+(res.emailError?' ('+res.emailError+')':'');
+    $('#thanksTxt').textContent=t;
+    const l=$('#thanksLinks');l.textContent='';
+    if(res.reportUrl)l.append(h('a',{href:res.reportUrl,target:'_blank',text:'📄 Rapport openen'}),' · ');
+    if(res.folderUrl)l.append(h('a',{href:res.folderUrl,target:'_blank',text:'📁 Map met foto\'s'}));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){alert('Opslaan mislukt: '+e.message+'\nJe gegevens staan nog in het formulier; probeer het opnieuw.');}
+  finally{$('#busy').hidden=true;}
+}
+$('#btnSave').onclick=()=>{if(validate(false))run(false);};
+$('#btnMail').onclick=()=>{
+  if(!validate(true))return;
+  const p=collect(true);const n=p.photos.filter(x=>MAIL_CATS.includes(x.category)).length;
+  const rows=[['Event',p.event],['Datum',p.date],['Apartment / kamer',p.apartmentShort+(p.room?' · Room '+p.room:'')],['Huurder',p.tenant],['E-mail naar',p.tenantEmail],['Bijlagen',`Rapport (PDF) + ${n} foto's (kamer, keuken, badkamer, gedeelde ruimtes en meters)`],['Alle foto\'s totaal',String(p.photos.length)+' (de rest staat alleen in Drive)']];
+  const t=h('table');rows.forEach(([a,b])=>t.append(h('tr',{},h('td',{text:a}),h('td',{text:b}))));
+  const m=$('#mBody');m.textContent='';m.append(h('p',{text:'Er wordt een Engelstalige e-mail vanuit jouw Gmail verstuurd:'}),t);
+  $('#modal').hidden=false;
+};
+$('#mCancel').onclick=()=>$('#modal').hidden=true;
+$('#mGo').onclick=()=>run(true);
+if(!IN_SCRIPT&&!SUBMIT_URL)$('#demoNote').textContent='Demo-modus: opslaan stuurt niets door.';
+
+</script></body></html>
