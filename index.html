@@ -102,6 +102,17 @@ footer .tiles{margin-top:24px}
 .history .tile{flex:none;width:44px;height:44px;border:2px solid var(--blue);border-radius:3px;background:var(--paper);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.05rem;color:var(--blue);box-shadow:inset 0 0 0 3px var(--blue-l);line-height:1}
 .history li p{margin:0}
 .history li b{font-family:'Cormorant Garamond',serif;color:var(--blue);font-size:1.15rem}
+.loc{margin:22px 0;display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 2px 0 var(--line),0 12px 30px -18px rgba(31,58,147,.45)}
+.loc figure{margin:0;position:relative;min-height:240px}
+.loc img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 40%;border-radius:12px 0 0 12px}
+.loc figcaption{position:absolute;left:0;right:0;bottom:0;padding:4px 10px;font-size:.7rem;color:#fff;background:rgba(20,40,107,.6)}
+.loc figcaption a{color:#fff}
+.loc .lt{padding:24px 26px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.loc h2{font-family:'Cormorant Garamond',serif;color:var(--blue);font-size:1.8rem;margin:0}
+.loc p{margin:.2em 0}
+.loc .map{align-self:flex-start;margin-top:10px;display:inline-block;background:var(--blue);color:#fff;text-decoration:none;padding:10px 18px;border-radius:999px;font-weight:600}
+.loc .map:hover{background:var(--blue-d)}
+@media(max-width:620px){.loc{grid-template-columns:1fr}.loc img{border-radius:12px 12px 0 0;max-height:300px}.loc figure{min-height:0}}
 </style>
 </head>
 <body>
@@ -146,6 +157,10 @@ footer .tiles{margin-top:24px}
 </header>
 
 <main>
+<section class="loc" aria-label="Location">
+<figure><img src="https://oudedelft107.pages.dev/oude-delft-107.jpg" alt="The canal house at Oude Delft 107 in Delft, with its brick facade and dormer window" loading="lazy" width="1200" height="1100"><figcaption>Oude Delft 107 · Photo: <a href="https://commons.wikimedia.org/wiki/File:Delft_Oude_Delft_107.jpg" target="_blank" rel="noopener">Ymblanter</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure>
+<div class="lt"><h2>Your new home</h2><p>Oude Delft 107, Delft</p><p>Come and find us on the oldest canal of Delft.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Oude+Delft+107+Delft" target="_blank" rel="noopener">View on Google Maps</a></div>
+</section>
 <section class="welcome">
 <h2>Welcome to Oude Delft 107!</h2>
 <p>We are so happy that you are coming to live with us. Our three apartments stand on the Oude Delft, the oldest canal of Delft, where you will wake up to centuries‑old gables, the sound of church bells and bicycles on the cobbles.</p>
